@@ -1,0 +1,60 @@
+<div class="container">
+
+h1(main). Readme Gradle Plugin
+
+This plugin provides functionality to generate a projects  README.textile and README.html as part of the Gradle build.
+The plugin is fully configurable and provides functionality for binding variables dynamic template variables to the README.textile al la Ant's FilterTask.
+
+h2. Contents
+
+# "Installation":#install
+# "Quick Start":#quick-start
+# "Convention Properties":#convention
+# "Template Variable Binding":#templateVars
+
+h2(#install). Installation
+
+To create the plugin jar do 
+
+bc. gradle
+
+The jar wil be created under _build/lib_
+
+h2(#quick-start). Quick Start
+
+build.gradle 
+
+bc.. buildscript {
+    dependencies {
+        classpath files('lib/readme.jar')
+    }
+}
+
+apply plugin: 'readme'
+
+//build logic...
+
+p. In a directory under the root of the project called readme
+
+bc. .
+|-- lib/readme.jar
+`-- readme
+    `--README.textile
+
+
+To create the README.textile and README.html at the root of the project, do
+
+bc. gradle createReadme
+
+h2(#convention). Convention Properties
+
+@TODO@
+
+h3(#templateVars). Template Variable Binding
+
+@TODO@
+
+
+
+</div>
+

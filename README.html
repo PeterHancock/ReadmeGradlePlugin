@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>README</title><link type="text/css" rel="stylesheet" href="readme/bootstrap.min.css"/></head><body><p><div class="container"></p><h1 id="ReadmeGradlePlugin" class="main">Readme Gradle Plugin</h1><p>This plugin provides functionality to generate a projects  README.textile and README.html as part of the Gradle build.<br/>The plugin is fully configurable and provides functionality for binding variables dynamic template variables to the README.textile al la Ant&#8217;s FilterTask.</p><h2 id="Contents">Contents</h2><ol><li><a href="README.html#install">Installation</a></li><li><a href="README.html#quick-start">Quick Start</a></li><li><a href="README.html#convention">Convention Properties</a></li><li><a href="README.html#templateVars">Template Variable Binding</a></li></ol><h2 id="install">Installation</h2><p>To create the plugin jar do </p><pre><code>gradle
+</code></pre><p>The jar wil be created under <em>build/lib</em></p><h2 id="quick-start">Quick Start</h2><p>build.gradle </p><pre><code>buildscript {
+    dependencies {
+        classpath files('lib/readme.jar')
+    }
+}
+
+apply plugin: 'readme'
+
+//build logic...
+
+</code></pre><p>In a directory under the root of the project called readme</p><pre><code>.
+|-- lib/readme.jar
+`-- readme
+    `--README.textile
+</code></pre><p>To create the README.textile and README.html at the root of the project, do</p><pre><code>gradle createReadme
+</code></pre><h2 id="convention">Convention Properties</h2><p><code>TODO</code></p><h3 id="templateVars">Template Variable Binding</h3><p><code>TODO</code></p><p></div></p></body></html>

@@ -1,0 +1,18 @@
+/*
+    Use the plugin to generate the README.html
+*/
+
+buildscript {
+    dependencies {
+        classpath files('build/libs/readme.jar')
+    }
+}
+
+apply plugin: 'readme'
+
+createReadme.doFirst {
+    readme {
+        stylesheets << 'readme/bootstrap.min.css'
+    }
+}
+

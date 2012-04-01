@@ -1,0 +1,22 @@
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+
+defaultTasks 'clean', 'test', 'assemble'
+
+configurations {
+    wikitext
+}
+dependencies {
+    groovy localGroovy()
+    compile gradleApi()
+    wikitext fileTree(dir: 'lib', include: '**/*.jar')
+}
+
+jar {
+    from configurations.wikitext.collect {
+        zipTree(it).matching {
+            exclude('META-INF/MANIFEST.MF')
+            exclude('META-INF/maven/**')
+        }
+    }
+}
