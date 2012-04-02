@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>README</title><link type="text/css" rel="stylesheet" href="readme/bootstrap.min.css"/></head><body><p><div class="container"></p><h1 id="ReadmeGradlePlugin" class="main">Readme Gradle Plugin</h1><p>This plugin provides functionality to generate a projects  README.textile and README.html as part of the Gradle build.<br/>The plugin is fully configurable and provides functionality for binding variables dynamic template variables to the README.textile al la Ant&#8217;s FilterTask.</p><h2 id="Contents">Contents</h2><ol><li><a href="README.html#install">Installation</a></li><li><a href="README.html#quick-start">Quick Start</a></li><li><a href="README.html#convention">Convention Properties</a></li><li><a href="README.html#templateVars">Template Variable Binding</a></li></ol><h2 id="install">Installation</h2><p>To create the plugin jar do </p><pre><code>gradle
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>README</title><link type="text/css" rel="stylesheet" href="readme/bootstrap.min.css"/></head><body><p><div class="container"></p><h1 id="ReadmeGradlePlugin" class="main">Readme Gradle Plugin</h1><p>This plugin provides functionality to generate a projects  README.textile and README.html as part of the Gradle build using the <a href="http://wiki.eclipse.org/Mylyn/Incubator/WikiText">WikiText project</a>.<br/>The plugin is fully configurable and provides functionality for binding dynamic template variables to the README.textile.</p><h2 id="Contents">Contents</h2><ol><li><a href="README.html#install">Installation</a></li><li><a href="README.html#quick-start">Quick Start</a></li><li><a href="README.html#convention">Convention Properties</a></li><li><a href="README.html#stylesheets">Including CSS Stylesheets</a></li><li><a href="README.html#templateVars">Template Variable Binding</a></li></ol><h2 id="install">Installation</h2><p>To create the plugin jar do </p><pre><code>gradle
 </code></pre><p>The jar wil be created under <em>build/lib</em></p><h2 id="quick-start">Quick Start</h2><p>build.gradle </p><pre><code>buildscript {
     dependencies {
         classpath files('lib/readme.jar')
@@ -9,9 +9,18 @@ apply plugin: 'readme'
 
 //build logic...
 
-</code></pre><p>In a directory under the root of the project called readme</p><pre><code>.
+</code></pre><p>Put the README.textile template in a directory under the root of the project called <em>readme</em></p><pre><code>.
 |-- lib/readme.jar
 `-- readme
     `--README.textile
 </code></pre><p>To create the README.textile and README.html at the root of the project, do</p><pre><code>gradle createReadme
-</code></pre><h2 id="convention">Convention Properties</h2><p><code>TODO</code></p><h3 id="templateVars">Template Variable Binding</h3><p><code>TODO</code></p><p></div></p></body></html>
+</code></pre><h2 id="convention">Convention Properties</h2><p>The plugin associates a convention object with the project called <em>readme</em>.  This can be configured as follows</p><pre><code>readme {
+    src = 'src/path' // Directory containing the source of the README.textile. Defaults to 'readme'
+    dest = 'dest/path' // The destination for the generated README.html.  Defaults to '.'
+    stylesheets // List of stylesheet URLs to link to in from README.html.
+    templateVars // Template variables with Groovy's SimleTemplateEngine.
+}
+</code></pre><h3 id="stylesheets">Inluding CSS Stylesheet</h3><p>The stylesheets convention property is a list of Strings representing URLs to CSS stylesheets.<br/>Stylesheets are placed into generated README.html.</p><h3 id="templateVars">Template Variable Binding</h3><p>The plugin uses the expand method of Gradle&#8217;s copy task to parse the README.textile in <em>src</em> with Groovy&#8217;s <a href="http://groovy.codehaus.org/api/groovy/text/SimpleTemplateEngine.html">SimpleTemplateEngine</a>.</p><p>Template variables can be defined in the following ways:</p><h4 id="Asdirectproperties">As direct properties</h4><pre><code>templateVars.x = y
+templateVars.a.b = c
+</code></pre><h4 id="Asgroovyconfig">As groovy config</h4><pre><code>templateVars &lt;&lt; CONFIG
+</code></pre><p>CONFIG is either an instance of java.util.String, java.io.File or java.net.URL and represents the location of a Groovy script.<br/>This script is parsed as a <a href="http://groovy.codehaus.org/gapi/groovy/util/ConfigObject.html">ConfigObject</a> and merged into templateVars.</p><p>Properties referenced that do not exist will be ignored.</p><p>The Gradle project instance is automatically made available as a template variable and cannot be reassigned.</p><p></div></p></body></html>

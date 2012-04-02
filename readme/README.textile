@@ -2,14 +2,15 @@
 
 h1(main). Readme Gradle Plugin
 
-This plugin provides functionality to generate a projects  README.textile and README.html as part of the Gradle build.
-The plugin is fully configurable and provides functionality for binding variables dynamic template variables to the README.textile al la Ant's FilterTask.
+This plugin provides functionality to generate a projects  README.textile and README.html as part of the Gradle build using the "WikiText project":http://wiki.eclipse.org/Mylyn/Incubator/WikiText.
+The plugin is fully configurable and provides functionality for binding dynamic template variables to the README.textile.
 
 h2. Contents
 
 # "Installation":#install
 # "Quick Start":#quick-start
 # "Convention Properties":#convention
+# "Including CSS Stylesheets":#stylesheets
 # "Template Variable Binding":#templateVars
 
 h2(#install). Installation
@@ -34,7 +35,7 @@ apply plugin: 'readme'
 
 //build logic...
 
-p. In a directory under the root of the project called readme
+p. Put the README.textile template in a directory under the root of the project called _readme_
 
 bc. .
 |-- lib/readme.jar
@@ -48,13 +49,41 @@ bc. gradle createReadme
 
 h2(#convention). Convention Properties
 
-@TODO@
+The plugin associates a convention object with the project called _readme_.  This can be configured as follows
+
+bc. readme {
+    src = 'src/path' // Directory containing the source of the README.textile. Defaults to 'readme'
+    dest = 'dest/path' // The destination for the generated README.html.  Defaults to '.'
+    stylesheets // List of stylesheet URLs to link to in from README.html.
+    templateVars // Template variables with Groovy's SimleTemplateEngine.
+}
+
+h3(#stylesheets). Inluding CSS Stylesheet
+
+The stylesheets convention property is a list of Strings representing URLs to CSS stylesheets.
+Stylesheets are placed into generated README.html.
 
 h3(#templateVars). Template Variable Binding
 
-@TODO@
+The plugin uses the expand method of Gradle's copy task to parse the README.textile in _src_ with Groovy's "SimpleTemplateEngine":http://groovy.codehaus.org/api/groovy/text/SimpleTemplateEngine.html.
 
+Template variables can be defined in the following ways:
 
+h4. As direct properties
+
+bc. templateVars.x = y
+templateVars.a.b = c
+
+h4. As groovy config
+
+bc. templateVars << CONFIG
+
+CONFIG is either an instance of java.util.String, java.io.File or java.net.URL and represents the location of a Groovy script.
+This script is parsed as a "ConfigObject":http://groovy.codehaus.org/gapi/groovy/util/ConfigObject.html and merged into templateVars.
+
+Properties referenced that do not exist will be ignored.
+
+The Gradle project instance is automatically made available as a template variable and cannot be reassigned.
 
 </div>
 

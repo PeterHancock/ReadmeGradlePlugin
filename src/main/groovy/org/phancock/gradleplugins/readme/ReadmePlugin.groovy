@@ -61,7 +61,6 @@ public class ReadmePlugin implements Plugin<Project> {
         }
         userVars.each { vars << it }
         vars.project = project
-        println vars
         return vars
     }
 }
