@@ -3,7 +3,6 @@ package org.phancock.gradleplugins.readme
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.Plugin
-import org.apache.tools.ant.filters.ReplaceTokens
 
 /**
  * A Gradle Plugin for creating a README.html from the Textile template README.textile.
@@ -34,7 +33,7 @@ public class ReadmePlugin implements Plugin<Project> {
                 from(readme.src)
                 into(readme.dest)
                 include ('README.textile')
-                filter(ReplaceTokens, tokens: readme.templateVars)
+                expand(createTemplateVars(project))
             }
             project.ant {
                 taskdef(classpath: project.rootProject.buildscript.configurations.classpath.asPath,
@@ -48,6 +47,38 @@ public class ReadmePlugin implements Plugin<Project> {
             }
         }
     }
+
+    private createTemplateVars(project) {
+        def vars = [:].withDefault { k ->
+            project.logger.warn("Unbound template variable $k")
+            return new UnboundVar()
+        }
+        def userVars = project.readme.templateVars.inject([:]) { userVars, var->
+            userVars << var; userVars
+        }
+        if (userVars.project) {
+            project.logger.warn("Attempted to reasign 'project' template variable")
+        }
+        userVars.each { vars << it }
+        vars.project = project
+        println vars
+        return vars
+    }
+}
+
+class UnboundVar {
+    def getProperty(String key) {
+        return new UnboundVar()
+    }
+
+    def get(key) {
+        return new UnboundVar()
+    }
+
+    @Override
+    public String toString() {
+        return ''
+    }
 }
 
 class ReadmeConvention {
@@ -59,7 +90,7 @@ class ReadmeConvention {
 
 class TemplateVars {
     @Delegate
-    Map delegate = [:]
+    Map delegate = [:].withDefault { key -> new ConfigObject() }
 
     @Override
     public void leftShift(File f) {
